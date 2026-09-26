@@ -19,7 +19,7 @@ Voice complaint → Speech-to-Text → AI understands complaint
 - **Backend:** Python + Flask (single small server, JSON-file storage — no database setup)
 - **Frontend:** plain HTML/CSS/JS, mic recording via the Web Audio API (16 kHz mono WAV)
 - **Sarvam AI APIs:**
-  - **Speech-to-Text** (`saarika:v2`) — multilingual speech recognition
+  - **Speech-to-Text** (`saaras:v3`) — multilingual speech recognition
   - **Chat completions** (`sarvam-m`) — understands code-mixed text and returns structured fields as JSON
 
 ## Project structure
