@@ -1,0 +1,16 @@
+# Secrets — never commit real credentials
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Demo data created at runtime
+data/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

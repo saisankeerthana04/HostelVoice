@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HostelVoice – Hostel Office Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">🏢</span>
+        <div>
+          <h1>HostelVoice</h1>
+          <p>Hostel Office Dashboard</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/">Student</a>
+        <a href="/dashboard" class="active">Hostel Office</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="dash-head">
+        <h2>Submitted complaints</h2>
+        <div class="dash-tools">
+          <span id="dashCount" class="muted"></span>
+          <button id="refreshBtn" class="btn small">Refresh</button>
+        </div>
+      </div>
+
+      <div class="stats" id="statsRow"></div>
+
+      <div class="table-wrap">
+        <table id="complaintsTable">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Room</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody id="complaintsBody">
+            <tr><td colspan="7" class="empty-msg">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>HostelVoice — demo project using Sarvam AI speech & language APIs</footer>
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

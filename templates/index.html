@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HostelVoice – AI Hostel Complaint Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">🎤</span>
+        <div>
+          <h1>HostelVoice</h1>
+          <p>AI Hostel Complaint Assistant</p>
+        </div>
+      </div>
+      <nav>
+        <a href="/" class="active">Student</a>
+        <a href="/dashboard">Hostel Office</a>
+      </nav>
+    </div>
+    {% if not sarvam_live %}
+    <div class="demo-banner" id="demoBanner">
+      Demo mode – no SARVAM_API_KEY configured. Voice input returns a sample
+      Tanglish complaint so you can try the full flow.
+    </div>
+    {% endif %}
+  </header>
+
+  <main class="container">
+
+    <!-- STEP 1: Record -->
+    <section class="card" id="step1">
+      <div class="step-head">
+        <span class="step-num">1</span>
+        <h2>Record your complaint</h2>
+      </div>
+      <p class="muted">Speak naturally in English, Tamil, Hindi, or even Tanglish!
+        For example: <em>“Room 312-la fan work aagala, nethu lendu problem.”</em></p>
+
+      <div class="record-area">
+        <button id="recordBtn" class="record-btn" title="Start recording">
+          <span class="mic-icon">🎙️</span>
+        </button>
+        <div class="record-info">
+          <div id="recordStatus" class="record-status">Tap the mic to start recording</div>
+          <div id="recordTimer" class="record-timer">00:00</div>
+          <audio id="audioPreview" controls hidden></audio>
+        </div>
+      </div>
+
+      <div class="divider"><span>or type your complaint</span></div>
+
+      <textarea id="complaintText" rows="3"
+        placeholder="Type your complaint here (English / தமிழ் / हिंदी / Tanglish)…"></textarea>
+
+      <div class="actions">
+        <button id="transcribeBtn" class="btn primary" disabled>Transcribe & Understand</button>
+      </div>
+      <p class="error hidden" id="step1Error"></p>
+    </section>
+
+    <!-- STEP 2: Review -->
+    <section class="card hidden" id="step2">
+      <div class="step-head">
+        <span class="step-num">2</span>
+        <h2>AI understood your complaint — review & edit</h2>
+      </div>
+
+      <div class="transcript-box">
+        <label>Transcribed complaint</label>
+        <textarea id="transcriptView" rows="2" readonly></textarea>
+        <div id="langBadge" class="badge"></div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="fName">Student name <span class="opt">(optional)</span></label>
+          <input id="fName" type="text" placeholder="e.g. Priya" />
+        </div>
+        <div class="field">
+          <label for="fRoom">Room number</label>
+          <input id="fRoom" type="text" placeholder="e.g. 312" />
+        </div>
+        <div class="field">
+          <label for="fCategory">Category</label>
+          <select id="fCategory">
+            <option>Electrical</option>
+            <option>Plumbing</option>
+            <option>Wi-Fi</option>
+            <option>Room Maintenance</option>
+            <option>Cleanliness</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fPriority">Priority</label>
+          <select id="fPriority">
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div class="field wide">
+          <label for="fDesc">Problem description</label>
+          <textarea id="fDesc" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label for="fDuration">Duration <span class="opt">(if mentioned)</span></label>
+          <input id="fDuration" type="text" placeholder="e.g. Since yesterday" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="submitBtn" class="btn primary">Submit Complaint</button>
+      </div>
+      <p class="error hidden" id="step2Error"></p>
+    </section>
+
+    <!-- STEP 3: Confirmation -->
+    <section class="card hidden" id="step3">
+      <div class="confirm-icon">✅</div>
+      <h2>Complaint submitted!</h2>
+      <p class="ticket-line">Your ticket ID is
+        <strong id="ticketId" class="ticket-id"></strong>
+      </p>
+      <div class="ticket-preview" id="ticketPreview"></div>
+      <div class="actions">
+        <button id="newComplaintBtn" class="btn">File another complaint</button>
+      </div>
+    </section>
+
+    <!-- TRACK STATUS -->
+    <section class="card">
+      <div class="step-head">
+        <span class="step-num">🔎</span>
+        <h2>Track your complaint</h2>
+      </div>
+      <div class="track-row">
+        <input id="trackInput" type="text" placeholder="Enter ticket ID, e.g. HV-0001" />
+        <button id="trackBtn" class="btn">Check status</button>
+      </div>
+      <div id="trackResult" class="hidden track-result"></div>
+    </section>
+  </main>
+
+  <footer>HostelVoice — demo project using Sarvam AI speech & language APIs</footer>
+
+  <script src="{{ url_for('static', filename='recorder.js') }}"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
