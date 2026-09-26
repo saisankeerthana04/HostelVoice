@@ -33,20 +33,21 @@ API_KEY_PRESENT = bool(SARVAM_API_KEY)
 # ---------------------------------------------------------------------------
 
 def transcribe_audio(audio_bytes: bytes, filename: str = "recording.wav") -> dict:
-    """Send the recorded audio to Sarvam Speech-to-Text.
+    """Send the recorded audio to Sarvam Speech-to-Text."""
 
-    Returns {"transcript": str, "language": str, "demo": bool}.
-    """
     if not API_KEY_PRESENT:
-        # Demo mode: no credentials configured.
         return {
-            "transcript": "Room 312-la fan work aagala, nethu lendu problem.",
+            "transcript": "Room 312-la fan work aagala, nethu lendhu problem.",
             "language": "demo",
             "demo": True,
         }
 
     files = {"file": (filename, audio_bytes, "audio/wav")}
-    data = {"model": STT_MODEL, "language_code": "unknown"}
+    data = {
+        "model": STT_MODEL,
+        "language_code": "unknown",
+        "mode": "transcribe",
+    }
 
     resp = requests.post(
         STT_URL,
@@ -55,11 +56,17 @@ def transcribe_audio(audio_bytes: bytes, filename: str = "recording.wav") -> dic
         data=data,
         timeout=60,
     )
+
+    print("SARVAM STATUS:", resp.status_code)
+    print("SARVAM RESPONSE:", resp.text)
+
     resp.raise_for_status()
     result = resp.json()
-    transcripts = result.get("transcripts") or []
+
+    transcript = result.get("transcript", "")
+
     return {
-        "transcript": transcripts[0] if transcripts else "",
+        "transcript": transcript,
         "language": result.get("language_code", "unknown"),
         "demo": False,
     }
